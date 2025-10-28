@@ -1,0 +1,23 @@
+package com.jurumin.springboot_developer.service;
+
+import com.jurumin.springboot_developer.domain.User;
+import com.jurumin.springboot_developer.dto.AddUserRequest;
+import com.jurumin.springboot_developer.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@RequiredArgsConstructor
+@Service
+public class UserService {
+
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public Long save(AddUserRequest dto){
+        return userRepository.save(User.builder()
+                .email(dto.getEmail())
+                .password(bCryptPasswordEncoder.encode(dto.getPassword()))
+                .build()).getId();
+    }
+}
